@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final public class Network: NetworkService {
+final public class NetworkManager: NetworkService {
     public var session: URLSession
     public var decoder: JSONDecoder
     
