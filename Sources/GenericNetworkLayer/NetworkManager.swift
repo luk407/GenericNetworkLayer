@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 final public class Network: NetworkService {
     public var session: URLSession
@@ -62,6 +63,22 @@ final public class Network: NetworkService {
                 return handler(.failure(NetworkError.status(code: response.statusCode, data: data)))
             }
             handler(.success((response: response, data: data)))
+        }.resume()
+    }
+    
+    public func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+        guard let url = URL(string: urlString) else {
+            completion(nil)
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard let data = data, error == nil, let image = UIImage(data: data) else {
+                completion(nil)
+                return
+            }
+            
+            completion(image)
         }.resume()
     }
 }
